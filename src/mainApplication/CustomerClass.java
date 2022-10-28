@@ -48,9 +48,6 @@ public class CustomerClass implements Serializable
 	
 	public ArrayList<String> getAccountHistoryType()
 	{
-		if(accountHistoryType.isEmpty())
-			return null;
-		
 		return accountHistoryType;
 	}
 	

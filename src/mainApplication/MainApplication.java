@@ -42,8 +42,6 @@ public class MainApplication
 	private static void homeScreen() throws IOException
 	{
 		
-		System.out.println("Welcome to Online Banking Application!");
-		
 		while(true)
 		{	
 			System.out.println("\nPress appropriate key: "
@@ -81,24 +79,22 @@ public class MainApplication
 	
 	private static void signUp()
 	{
-		System.out.println("Enter your name:"
-				+ "\n(Note: Only alphabets and spaces are allowed.)");
+		System.out.println("Enter your name:");
 		String customerName = UtilityMethods.stringInput();
 		while(UtilityMethods.checkCustomerName(customerName)==false)
 		{
-			System.out.println("Names should contain at least one alphabet.");
+			System.out.println("Names should only contain alphabets "
+					+ "and spaces");
 			System.out.println("\nEnter your name:");
 			customerName = UtilityMethods.stringInput();
 		}
 		
-		System.out.println("Enter username:"
-				+ "\n(Note: Username must be of at least 4 character length, containing at least 1 "
-				+ "alphabet, and no spaces or special symbols)");
+		//todo: take input only till space; Regex: ^[^ ]+$
+		System.out.println("Enter username:");
 		String username = UtilityMethods.stringInput();
 		while(UtilityMethods.checkCustomerUsername(username) == false)
 		{
-			System.out.println("Please note: Username must be of at least 4 character length, "
-					+ "containing at least 1 alphabet, and no spaces or special symbols");
+			System.out.println("Please enter atleast 1 alphabet in username");
 			System.out.println("\nEnter username:");
 			username = UtilityMethods.stringInput();
 		}
@@ -110,25 +106,8 @@ public class MainApplication
 			username = UtilityMethods.stringInput();
 		}
 		
-		System.out.println("Enter password:\n"
-				+ "(Note: Password must be of at least 4 character length, containing at least 1 digit, "
-				+ "1 Uppercase alphabet, 1 Lowercase alphabet and no spaces.)");
+		System.out.println("Enter password:");
 		String password = UtilityMethods.stringInput();
-		
-		HashMap<Boolean, String> customerPasswordResult = 
-				UtilityMethods.checkCustomerPassword(password);
-		
-		while(customerPasswordResult.get(true) == null)
-		{
-			System.out.println(customerPasswordResult.get(false));
-			System.out.println("\nEnter password:");
-			password = UtilityMethods.stringInput();
-			customerPasswordResult = 
-					UtilityMethods.checkCustomerPassword(password);
-		}
-		
-		//Prints "Good password"
-		System.out.println(customerPasswordResult.get(true));
 		
 		//remove \n??
 		String credentialsData = username + ", " + password + "\n";
@@ -138,7 +117,6 @@ public class MainApplication
 		CustomerClass newCustomer = 
 				new CustomerClass(customerName, username, password);
 		
-		//This saves the newCustomer object in file.
 		BankingOptions.logOut(newCustomer);    
 		
 		System.out.println("Please login to use our services:");

@@ -77,12 +77,6 @@ public class BankingOptions {
 		
 		//todo: special message for no history
 		
-		if(accountHistoryType == null)
-		{
-			System.out.println("No history to show.");
-			return;
-		}
-		
 		for(int i=0; i<accountHistoryData.size(); i++)
 		{
 			System.out.println(accountHistoryType.get(i) + " : "
@@ -98,17 +92,11 @@ public class BankingOptions {
 		int currentBalance = newCustomer.getBalanceAmount();
 		int withdrawAmount=0; 	//setting 0 as a default value
 		
-		if(currentBalance==0)
-		{
-			System.out.println("You don't have any balance in your account. ");
-			return;
-		}
-		
 		System.out.println("Enter amount to withdraw:");
 		
 		withdrawAmount = UtilityMethods.integerInput();
 		
-		while(withdrawAmount > currentBalance || withdrawAmount <= 0)
+		while(withdrawAmount > currentBalance || withdrawAmount < 0)
 		{
 			System.out.println("Please enter amount between 0 and "
 					+ currentBalance);
@@ -131,7 +119,7 @@ public class BankingOptions {
 		System.out.println("Enter an amount to deposit in your account: ");
 		int toDeposit = UtilityMethods.integerInput();
 		
-		while(toDeposit<=0)
+		while(toDeposit<0)
 		{
 			System.out.println("Please enter an amount greater than 0.");
 			toDeposit = UtilityMethods.integerInput();
