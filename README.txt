@@ -1,5 +1,19 @@
-Everything is working fine in this but...
+Everythings working fine.
 
-1. The credentialsFile is storing only the latest user who signed up. Still, older users are magically authorised. Validating users is authentic.
-2. The file path used to store user objects is absolute...need to make it relative file path.
-3. Need to refactor code - keep various function files in differnt directories
+
+Done:
+1. Added condition checks in name, username and password.
+
+
+Todo:
+
+4. trim password after the user enters it for convienence 
+5. Don't hard code the file locations 
+
+
+
+-----------------------------
+
+Low priority todo:
+1. make files as .txt
+2. make previous users credentials visible in the credentialsFile

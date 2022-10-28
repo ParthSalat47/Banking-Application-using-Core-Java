@@ -24,13 +24,6 @@ public class CustomerClass implements Serializable
 		this.customerUsername =customerID;
 		this.customerPassword = customerPassword;
 	}
-	/*
-	public CustomerClass(String customerID, String customerPassword)
-	{
-		this.customerUsername =customerID;
-		this.customerPassword = customerPassword;
-	}
-	*/
 	
 	public String getUsername()
 	{
@@ -55,26 +48,15 @@ public class CustomerClass implements Serializable
 	
 	public ArrayList<String> getAccountHistoryType()
 	{
+		if(accountHistoryType.isEmpty())
+			return null;
+		
 		return accountHistoryType;
 	}
 	
 	public ArrayList<Integer> getAccountHistoryData()
 	{
 		return accountHistoryData;
-	}
-	
-	/*
-	public void getAccountHistory(String type, Integer data)
-	{
-		this.accountHistory.put(type, data);
-	}
-	*/
-	
-	
-	public static void main(String[] args) 
-	{
-		
-
 	}
 	
 	
