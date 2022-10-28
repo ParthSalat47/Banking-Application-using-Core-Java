@@ -22,12 +22,13 @@ public class CustomerClass
 		this.customerUsername =customerID;
 		this.customerPassword = customerPassword;
 	}
-	
+	/*
 	public CustomerClass(String customerID, String customerPassword)
 	{
 		this.customerUsername =customerID;
 		this.customerPassword = customerPassword;
 	}
+	*/
 	
 	public int getBalanceAmount()
 	{

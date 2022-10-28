@@ -35,7 +35,6 @@ public class MainApplication
 	
 	private static void homeScreen() throws IOException
 	{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		while(true)
 		{	
@@ -44,7 +43,7 @@ public class MainApplication
 					+ "\n2. Log in"
 					+ "\n3. Exit");
 			
-			int option = Integer.parseInt(br.readLine());
+			int option = integerInput(); 
 			
 			switch(option)
 			{
@@ -62,7 +61,7 @@ public class MainApplication
 				{
 					return;
 				}
-				default:	//change it to give encouraging msg
+				default:	
 				{
 					System.out.println("Please enter a number between 1 and 3.");
 				}
@@ -110,7 +109,7 @@ public class MainApplication
 		System.out.println("Enter username:");
 		String username = stringInput();
 		
-		while(customerCredentials.containsKey(username) == false)
+		if(customerCredentials.containsKey(username) == false)
 		{
 			System.out.println("No such username found. Please sign up or "
 					+ "enter correct username.");
