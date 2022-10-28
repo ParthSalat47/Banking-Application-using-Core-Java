@@ -1,10 +1,12 @@
 package mainApplication;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class CustomerClass 
+public class CustomerClass implements Serializable
 {
 
+	private static final long serialVersionUID = 1L; 
 	private String customerName;
 	private String customerUsername;
 	private String customerPassword;
@@ -29,6 +31,11 @@ public class CustomerClass
 		this.customerPassword = customerPassword;
 	}
 	*/
+	
+	public String getUsername()
+	{
+		return this.customerUsername;
+	}
 	
 	public int getBalanceAmount()
 	{

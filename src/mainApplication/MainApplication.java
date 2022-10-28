@@ -2,11 +2,14 @@ package mainApplication;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import mainApplication.CustomerClass;
 
 public class MainApplication 
 {
-	
+
 	 private static HashMap<String, String> customerCredentials = 
 			new HashMap<String, String>();
 	 private static HashMap<String, CustomerClass>  userSessions = 
@@ -15,6 +18,7 @@ public class MainApplication
 	public static void main(String[] args) 
 	{
 		
+		loadCustomerData();
 		
 		try
 		{
@@ -90,15 +94,29 @@ public class MainApplication
 		System.out.println("Enter password:");
 		String password = stringInput();
 		
-		customerCredentials.put(username, password);
+		//remove this?
+		//customerCredentials.put(username, password);
+		
+		//remove \n??
+		String credentialsData = username + ", " + password + "\n";
+		
+		fileWriterMethod("credentialsFile.txt", credentialsData);
 		
 		System.out.println("Happy banking!");
 		
 		CustomerClass newCustomer = 
 				new CustomerClass(customerName, username, password);
 		
-		userSessions.put(username, newCustomer);
+		//remove this?
+		/*
+		String directory = "C:\\Users\\parthsalat\\eclipse-workspace"
+				+ "\\BankingApplication\\customerObjects\\" + username 
+				+ ".txt"; 
 		
+		//fileWriterMethod("sessionsFile.txt", username + "::");
+		
+		writeObjectToFile(directory, newCustomer);
+		*/
 		bankingOptionsLoop(newCustomer);
 		
 		
@@ -106,6 +124,8 @@ public class MainApplication
 	
 	private static void logIn()
 	{
+		loadCustomerData();
+		
 		System.out.println("Enter username:");
 		String username = stringInput();
 		
@@ -173,6 +193,7 @@ public class MainApplication
 				}
 				case 5:
 				{
+					logOut(newCustomer);
 					return;
 				}
 				default:
@@ -255,6 +276,27 @@ public class MainApplication
 		System.out.println("Successfully deposited!");
 	}
 	
+	private static void logOut(CustomerClass newCustomer)
+	{
+		String directoryString = "C:\\Users\\parthsalat\\eclipse-workspace"
+				+ "\\BankingApplication\\customerObjects\\" 
+				+ newCustomer.getUsername();
+				//+ ".txt"; 
+		
+		try
+		{
+		//This is used to clear the contents of the file:
+			new PrintWriter(directoryString).close();
+		}
+		catch(FileNotFoundException e)
+		{
+			System.out.println("No file exists for this user!");
+		}
+		
+		writeObjectToFile(directoryString, newCustomer); 
+		
+	}
+	
 	private static int integerInput()
 	{
 		/*
@@ -303,6 +345,123 @@ public class MainApplication
 
 		return value;
 	}
+	
+	private static void fileWriterMethod(String fileName, String data)
+	{
+		try(
+				FileWriter writer = new FileWriter(fileName);  
+			    BufferedWriter buffer = new BufferedWriter(writer); )
+		{
+			buffer.write(data);  
+		} 
+		catch (IOException e)
+		{
+			System.out.println("Encountered an IO exception while writing to a file!");
+		}
+	}
+	
+	private static void loadCustomerData()
+	{
+		loadCustomerCredentials();
+		loadCustomerSessions();
+		
+	}
+	
+	private static void loadCustomerCredentials()
+	{
+		//this function is working perfectly
+		
+		try(
+				FileReader fr=new FileReader("credentialsFile.txt");    
+		        BufferedReader br=new BufferedReader(fr) )
+		{
+			String line;
+			
+			while((line = br.readLine()) != null)
+			{
+				//extracts everything before the 1st comma
+				Pattern usernamePattern = Pattern.compile("^[^,]*");
+				Matcher usernameMatcher = usernamePattern.matcher(line); 
+				
+				Pattern passwordPattern = Pattern.compile("[^, ]*$");
+				Matcher passwordMatcher = passwordPattern.matcher(line); 
+				
+				//it's required for matcher.group()
+				usernameMatcher.find();	
+				passwordMatcher.find();
+				
+				//System.out.println(usernameMatcher.group() + " +12345+ " 
+				//+ passwordMatcher.group());
+				
+				customerCredentials.put(usernameMatcher.group(), 
+						passwordMatcher.group());
+			}
+			
+			
+		}
+		catch(IOException e)
+		{
+			System.out.println("Encountered an IO exception while reading from file!");
+		}
+	}
+	
+	private static void loadCustomerSessions()
+	{
+		String directoryString = "C:\\Users\\parthsalat\\eclipse-workspace"
+				+ "\\BankingApplication\\customerObjects\\";// + username; 
+		
+		File directoryFile = new File(directoryString);
+		 File[] directoryListing = directoryFile.listFiles();
+		
+		 for(File singleTextFile : directoryListing)
+		 {
+			 try(
+					 FileInputStream fi = new FileInputStream(singleTextFile);
+						ObjectInputStream oi = new ObjectInputStream(fi); 
+					 )
+			{
+			 CustomerClass customerObject = (CustomerClass) oi.readObject();
+				 
+			 String fileName = singleTextFile.getName();
+			 
+			 userSessions.put(fileName, customerObject);
+	
+			}
+			catch(IOException e)
+			{
+				System.out.println("Encountered an IO exception while reading from file!");
+			}
+			 	catch(ClassNotFoundException c)
+			 {
+			 	c.printStackTrace();
+			 }
+		 }
+		 
+		
+	}
+	
+	private static void writeObjectToFile(String fileName, CustomerClass object)
+	{
+		try {
+			FileOutputStream f = new FileOutputStream(new File(fileName));
+			ObjectOutputStream o = new ObjectOutputStream(f);
 
+			// Write objects to file
+			o.writeObject(object); 
+			
+			System.out.println("\n\n");
+			
+			o.close();
+			f.close();
+		}
+		catch(IOException e)
+		{
+			System.out.println("Encountered an IO exception while writing "
+					+ "object to file.");
+		}
+	
+	}
+	
+	
 }
 
