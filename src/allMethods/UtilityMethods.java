@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.regex.*;
 
 import mainApplication.CustomerClass;
@@ -108,30 +109,93 @@ public class UtilityMethods {
 		 * Returns true if at least one alphabet exists.
 		 */
 		
-		Pattern pat = Pattern.compile("\\D");
-		Matcher mat = pat.matcher(inputString); 
+		//Pattern digitPattern = Pattern.compile("\\D");
+		Pattern symbolPattern = Pattern.compile("^[A-Za-z0-9]+$");
+		Pattern spacePattern = Pattern.compile("^[^ ]+$");
+		Pattern alphabetPattern = Pattern.compile("[A-Za-z]{1}");
+		Pattern lengthPattern = Pattern.compile("[A-Za-z0-9]{4}");
+		
+		//Matcher digitMatcher = digitPattern.matcher(inputString); 
+		Matcher symbolMatcher = symbolPattern.matcher(inputString);
+		Matcher spaceMatcher = spacePattern.matcher(inputString);
+		Matcher alphabetMatcher = alphabetPattern.matcher(inputString);
+		Matcher lengthMatcher = lengthPattern.matcher(inputString);
 		
 		//To fire up regex and return boolean:
-		return mat.find();
+		return (spaceMatcher.find() & lengthMatcher.find() & 
+				alphabetMatcher.find() & symbolMatcher.find());
 		
 	}
 
 	public static boolean checkCustomerName(String inputString)
 	{
 		/*
-		 * Checks if string comprises of only alphabets
+		 * Checks if string comprises of only alphabets and no spaces
 		 * 
 		 * Returns true if all characters are alphabets. 
 		 */
 		
 		Pattern pat = Pattern.compile("^[A-Za-z ]+$");
-		Matcher mat = pat.matcher(inputString); 
+		Pattern spacePattern = Pattern.compile("^[^ ]+$");
+		
+		Matcher mat = pat.matcher(inputString);
+		Matcher spaceMatcher = spacePattern.matcher(inputString);
 		
 		//To fire up regex and return boolean:
-		return mat.find();
+		return (mat.find() & spaceMatcher.find()); 
 		
+	}
+	
+	public static HashMap<Boolean, String> checkCustomerPassword(String inputString) {
+		HashMap<Boolean, String> customerPasswordResult = 
+				new HashMap<Boolean, String>();
 		
+		Pattern digitPattern = Pattern.compile("\\d");
+		Pattern spacePattern = Pattern.compile("^[^ ]+$");
+		Pattern upperCasePattern = Pattern.compile("[A-Z]");
+		Pattern lowerCasePattern = Pattern.compile("[a-z]");
+		Pattern lengthPattern = Pattern.compile(".{4}");
 		
+		Matcher digitMatcher = digitPattern.matcher(inputString); 
+		Matcher spaceMatcher = spacePattern.matcher(inputString);
+		Matcher upperCaseMatcher = upperCasePattern.matcher(inputString);
+		Matcher lowerCaseMatcher = lowerCasePattern.matcher(inputString);
+		Matcher lengthMatcher = lengthPattern.matcher(inputString);
+		
+		if(!digitMatcher.find())	
+		{
+			customerPasswordResult.put(false, "Password should contain at least 1 digit.");
+			return customerPasswordResult;
+		}
+		
+		if(!spaceMatcher.find())
+		{
+			customerPasswordResult.put(false, "Password should not contain spaces.");
+			return customerPasswordResult;
+		}
+		
+		if(!upperCaseMatcher.find())
+		{
+			customerPasswordResult.put(false, "Password should contain at least 1 uppercase"
+					+ " alphabet.");
+			return customerPasswordResult;
+		}
+		
+		if(!lowerCaseMatcher.find())
+		{
+			customerPasswordResult.put(false, "Password should contain at least 1 lowercase"
+					+ " alphabet.");
+			return customerPasswordResult;
+		}
+		
+		if(!lengthMatcher.find())
+		{
+			customerPasswordResult.put(false, "Password length should be at least 4 characters.");
+			return customerPasswordResult;
+		}
+		
+		customerPasswordResult.put(true, "Good password!");
+		return customerPasswordResult;
 	}
 	
 	
